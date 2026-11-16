@@ -1,0 +1,28 @@
+name: slow-board
+
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: slow-board-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?docker/.env에 MYSQL_ROOT_PASSWORD를 설정하세요}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:?docker/.env에 MYSQL_DATABASE를 설정하세요}
+      MYSQL_USER: ${MYSQL_USER:?docker/.env에 MYSQL_USER를 설정하세요}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:?docker/.env에 MYSQL_PASSWORD를 설정하세요}
+      TZ: Asia/Seoul
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_0900_ai_ci
+    ports:
+      - "127.0.0.1:3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -uroot -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+      start_period: 20s
+
+volumes:
+  mysql-data:
