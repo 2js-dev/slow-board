@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: slow-board
+  profiles:
+    default: local
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: none
+
+server:
+  port: 8080
